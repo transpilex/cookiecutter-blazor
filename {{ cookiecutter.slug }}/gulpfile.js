@@ -12,26 +12,26 @@ const rename = require('gulp-rename');
 const gulUglifyES = require('gulp-uglify-es');
 const npmdist = require('gulp-npm-dist');
 const replace = require('gulp-replace');
-{% - if cookiecutter.ui_library == 'Tailwind' %}
+{%- if cookiecutter.ui_library == 'Tailwind' %}
 const tailwindcss = require('@tailwindcss/postcss');
-{% - else %}
+{%- else %}
 const gulpSass = require('gulp-sass');
 const dartSass = require('sass');
 const tildeImporter = require('node-sass-tilde-importer');
 const rtlcss = require('gulp-rtlcss');
 const sass = gulpSass(dartSass);
 const uglify = gulUglifyES.default;
-{% - endif %}
+{%- endif %}
 
 
-{% - if cookiecutter.has_plugins_config == 'y' %}
+{%- if cookiecutter.has_plugins_config == 'y' %}
 const pluginFile = require("./plugins.config"); // Import the plugins list
-{% - else %}
+{%- else %}
 const pluginFile = {
     vendorsCSS: [],
     vendorsJS: []
 }
-{% - endif %}
+{%- endif %}
 
 
 const paths = {
@@ -39,7 +39,7 @@ const paths = {
     baseSrcAssets: "wwwroot/",   // source assets directory
 };
 
-{% - if cookiecutter.has_plugins_config == 'y' %}
+{%- if cookiecutter.has_plugins_config == 'y' %}
 // Copying Third Party Plugins Assets
 const plugins = function () {
     const out = paths.baseDistAssets + "/plugins/";
@@ -114,7 +114,7 @@ const plugins = function () {
     return Promise.resolve();
 };
 
-{% - else %}
+{%- else %}
 
 const vendorStyles = function () {
     const out = paths.baseDistAssets + "/css/";
@@ -149,10 +149,10 @@ const plugins = function () {
         }))
         .pipe(dest(out));
 };
-{% - endif %}
+{%- endif %}
 
 
-{% - if cookiecutter.ui_library == 'Tailwind' %}
+{%- if cookiecutter.ui_library == 'Tailwind' %}
 
 const processCss = [
     tailwindcss(),
@@ -180,7 +180,7 @@ const watchFiles = function () {
     watch(paths.baseSrcAssets + "/css/**/*.css", series(styles));
 }
 
-{% - else %}
+{%- else %}
 
 const processCss = [
     autoprefixer(), // adds vendor prefixes
@@ -232,16 +232,16 @@ function watchFiles() {
     watch(paths.baseSrcAssets + "/scss/**/*.scss", series(styles));
 }
 
-{% - endif %}
+{%- endif %}
 
 
 // Production Tasks
 exports.default = series(
     plugins,
-    {% - if cookiecutter.has_plugins_config == 'n' %}
+    {%- if cookiecutter.has_plugins_config == 'n' %}
 vendorStyles,
     vendorScripts,
-    {% - endif %}
+    {%- endif %}
 parallel(styles),
     parallel(watchFiles)
 );
@@ -249,21 +249,21 @@ parallel(styles),
 // Build Tasks
 exports.build = series(
     plugins,
-    {% - if cookiecutter.has_plugins_config == 'n' %}
+    {%- if cookiecutter.has_plugins_config == 'n' %}
 vendorStyles,
     vendorScripts,
-    {% - endif %}
+    {%- endif %}
 parallel(styles),
 );
 
-{% - if cookiecutter.ui_library == 'Bootstrap' %}
+{%- if cookiecutter.ui_library == 'Bootstrap' %}
 // RTL Tasks
 exports.rtl = series(
     plugins,
-    {% - if cookiecutter.has_plugins_config == 'n' %}
+    {%- if cookiecutter.has_plugins_config == 'n' %}
 vendorStyles,
     vendorScripts,
-    {% - endif %}
+    {%- endif %}
 parallel(rtl),
     parallel(watchFiles),
 );
@@ -271,10 +271,10 @@ parallel(rtl),
 // RTL Build Tasks
 exports.rtlBuild = series(
     plugins,
-    {% - if cookiecutter.has_plugins_config == 'n' %}
+    {%- if cookiecutter.has_plugins_config == 'n' %}
 vendorStyles,
     vendorScripts,
-    {% - endif %}
+    {%- endif %}
 parallel(rtl),
 );
-{% - endif %}
+{%- endif %}
