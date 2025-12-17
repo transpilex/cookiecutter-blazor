@@ -70,10 +70,6 @@ def handle_js_runner(frontend_pipeline, ui_library):
         if ui_library == "Tailwind":
             scripts = {"dev": "gulp", "build": "gulp build"}
             remove_dev_deps = [
-                "@tailwindcss/vite",
-                "glob",
-                "path",
-                "vite",
                 "sass",
                 "gulp-sass",
                 "gulp-uglify-es",
@@ -88,11 +84,7 @@ def handle_js_runner(frontend_pipeline, ui_library):
                 "rtl-build": "gulp rtlBuild",
             }
             remove_dev_deps = [
-                "@tailwindcss/postcss",
-                "@tailwindcss/vite",
-                "glob",
-                "path",
-                "vite",
+                "@tailwindcss/postcss"
             ]
         update_package_json(remove_dev_deps=remove_dev_deps, scripts=scripts)
 
